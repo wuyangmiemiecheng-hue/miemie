@@ -352,6 +352,48 @@ small {
   font-size: 13px;
 }
 
+.field-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.mini-toggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel-strong), transparent 35%);
+}
+
+.mini-toggle button {
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 9px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 12px;
+}
+
+.mini-toggle button.selected {
+  color: var(--bg);
+  background: var(--accent);
+}
+
+.dms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.density-field select {
+  margin-bottom: 8px;
+}
+
 input,
 select {
   min-height: 42px;
@@ -430,6 +472,16 @@ select:focus {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+.result-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .result-item {
@@ -546,6 +598,30 @@ select:focus {
 .big-circle.secondary {
   stroke: var(--accent-2);
   fill: color-mix(in srgb, var(--accent-2), transparent 93%);
+}
+
+.diagram-panel-fill {
+  fill: color-mix(in srgb, var(--panel-strong), transparent 18%);
+  stroke: var(--border);
+}
+
+.pipe-outer {
+  stroke: var(--accent);
+  stroke-width: 4;
+  fill: color-mix(in srgb, var(--accent), transparent 90%);
+  vector-effect: non-scaling-stroke;
+}
+
+.pipe-inner {
+  stroke: var(--accent-2);
+  stroke-width: 3;
+  fill: color-mix(in srgb, var(--bg), transparent 18%);
+  vector-effect: non-scaling-stroke;
+}
+
+.pipe-chip {
+  fill: color-mix(in srgb, var(--accent), transparent 82%);
+  stroke: var(--accent);
 }
 
 .polygon-fill {

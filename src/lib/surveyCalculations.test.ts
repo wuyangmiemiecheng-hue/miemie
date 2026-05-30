@@ -8,13 +8,14 @@ describe("surveyCalculations", () => {
   });
 
   it("calculates coordinate inverse", () => {
-    const result = calculateSurvey("coordinate-forward-inverse", {
-      mode: "inverse",
+    const result = calculateSurvey("coordinate-inverse", {
       xA: 0,
       yA: 0,
       xB: 3,
       yB: 4
     });
+    expect(result.values.deltaX).toBeCloseTo(3, 8);
+    expect(result.values.deltaY).toBeCloseTo(4, 8);
     expect(result.values.distance).toBeCloseTo(5, 8);
     expect(result.values.azimuth).toBeCloseTo(53.13010235, 8);
   });

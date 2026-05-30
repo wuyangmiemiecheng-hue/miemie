@@ -2,7 +2,7 @@ export type FormulaStatus = "已核对" | "需复核" | "暂缺权威来源" | "
 
 export type ModuleId = "calculator" | "survey" | "pipes" | "units";
 
-export type FieldType = "number" | "select";
+export type FieldType = "number" | "select" | "angle" | "density";
 
 export interface SourceItem {
   id: string;
@@ -42,6 +42,7 @@ export interface FormulaItem {
   sourceIds: string[];
   status: FormulaStatus;
   notes?: string;
+  diagram?: string;
 }
 
 export interface UnitItem {

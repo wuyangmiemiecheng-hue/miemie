@@ -28,39 +28,55 @@ const formula = (
   outputs: Array<{ key: string; label: string; unit?: string }>,
   formulaText: string,
   status: "已核对" | "需复核" = "已核对",
-  notes?: string
+  notes?: string,
+  diagram?: string
 ): FormulaItem => ({
   id,
   module: "survey",
   category,
   name,
-  inputs,
+  inputs: inputs.map((input) => input.unit === "deg" ? { ...input, type: "angle" } : input),
   outputs,
   formulaText,
   sourceIds: status === "需复核" ? ["survey-part-1", "survey-review"] : ["survey-part-1"],
   status,
-  notes
+  notes,
+  diagram
 });
 
 export const surveyFormulas: FormulaItem[] = [
   formula(
-    "coordinate-forward-inverse",
+    "coordinate-forward",
     "基础坐标计算",
-    "坐标正反算",
+    "坐标正算",
     [
-      { key: "mode", label: "计算模式", type: "select", defaultValue: "forward", options: [{ label: "坐标正算", value: "forward" }, { label: "坐标反算", value: "inverse" }] },
       ...pointA,
-      ...pointB,
-      { key: "distance", label: "距离 D（正算）", unit: "m", defaultValue: 120 },
-      { key: "alpha", label: "方位角 alpha（正算）", unit: "deg", defaultValue: 35 }
+      { key: "distance", label: "距离", unit: "m", defaultValue: 120 },
+      { key: "alpha", label: "方位角", unit: "deg", defaultValue: 35 }
     ],
     [
-      { key: "x", label: "目标点 X", unit: "m" },
-      { key: "y", label: "目标点 Y", unit: "m" },
-      { key: "distance", label: "距离 DAB", unit: "m" },
-      { key: "azimuth", label: "方位角 alphaAB", unit: "deg" }
+      { key: "x", label: "终点 X 坐标", unit: "m" },
+      { key: "y", label: "终点 Y 坐标", unit: "m" }
     ],
-    "正算: xB=xA+D*cos(alpha), yB=yA+D*sin(alpha). 反算: D=sqrt(dx^2+dy^2), alpha=norm360(atan2(dy,dx))."
+    "坐标正算: XB=XA+D*cos(alpha), YB=YA+D*sin(alpha)。",
+    "已核对"
+  ),
+  formula(
+    "coordinate-inverse",
+    "基础坐标计算",
+    "坐标反算",
+    [
+      ...pointA,
+      ...pointB
+    ],
+    [
+      { key: "deltaX", label: "坐标增量 ΔX", unit: "m" },
+      { key: "deltaY", label: "坐标增量 ΔY", unit: "m" },
+      { key: "distance", label: "距离", unit: "m" },
+      { key: "azimuth", label: "方位角", unit: "deg" }
+    ],
+    "坐标反算: ΔX=XB-XA, ΔY=YB-YA, D=sqrt(ΔX^2+ΔY^2), alpha=norm360(atan2(ΔY,ΔX))。",
+    "已核对"
   ),
   formula(
     "reverse-azimuth",
@@ -94,17 +110,13 @@ export const surveyFormulas: FormulaItem[] = [
       { key: "y0", label: "施工原点大地 Y0", unit: "m", required: true, defaultValue: 2000 },
       { key: "xp", label: "施工坐标 x'", unit: "m", required: true, defaultValue: 20 },
       { key: "yp", label: "施工坐标 y'", unit: "m", required: true, defaultValue: 10 },
-      { key: "xP", label: "大地坐标 X（反算）", unit: "m", defaultValue: 1010 },
-      { key: "yP", label: "大地坐标 Y（反算）", unit: "m", defaultValue: 2020 },
-      { key: "angle", label: "夹角 a", unit: "deg", required: true, defaultValue: 15 }
+      { key: "angle", label: "偏角", unit: "deg", required: true, defaultValue: 15 }
     ],
     [
-      { key: "globalX", label: "施工转大地 X", unit: "m" },
-      { key: "globalY", label: "施工转大地 Y", unit: "m" },
-      { key: "localX", label: "大地转施工 x'", unit: "m" },
-      { key: "localY", label: "大地转施工 y'", unit: "m" }
+      { key: "globalX", label: "转后 P 点大地 X 坐标", unit: "m" },
+      { key: "globalY", label: "转后 P 点大地 Y 坐标", unit: "m" }
     ],
-    "施工->大地: x=x0+xp*cosa-yp*sina, y=y0+xp*sina+yp*cosa；大地->施工使用逆旋转。"
+    "施工坐标转大地坐标: X=X0+x'*cos(a)-y'*sin(a), Y=Y0+x'*sin(a)+y'*cos(a)。"
   ),
   formula(
     "point-line-distance",
@@ -115,9 +127,10 @@ export const surveyFormulas: FormulaItem[] = [
       { key: "footX", label: "垂足 X", unit: "m" },
       { key: "footY", label: "垂足 Y", unit: "m" },
       { key: "distance", label: "垂距 d", unit: "m" },
-      { key: "station", label: "沿线参数 t" }
+      { key: "distanceToA", label: "垂点到 A 点的距离", unit: "m" },
+      { key: "distanceToB", label: "垂点到 B 点的距离", unit: "m" }
     ],
-    "r=B-A, w=P-A, t=dot(w,r)/dot(r,r), O=A+t*r, d=|cross(r,w)|/|r|。"
+    "r=B-A, w=P-A, t=dot(w,r)/dot(r,r), O=A+t*r, d=|cross(r,w)|/|r|，再计算 O 到 A/B 的距离。"
   ),
   formula(
     "line-intersection",
@@ -197,7 +210,8 @@ export const surveyFormulas: FormulaItem[] = [
       { key: "c1y", label: "交点 C Y", unit: "m" },
       { key: "c2x", label: "交点 C' X", unit: "m" },
       { key: "c2y", label: "交点 C' Y", unit: "m" },
-      { key: "centerDistance", label: "圆心距", unit: "m" }
+      { key: "centerDistance", label: "AB 两点的距离", unit: "m" },
+      { key: "angle", label: "角 α", unit: "deg" }
     ],
     "d=|B-A|, a=(R1^2-R2^2+d^2)/(2d), h=sqrt(R1^2-a^2), C=A+a*u±h*n。"
   ),
@@ -205,16 +219,15 @@ export const surveyFormulas: FormulaItem[] = [
     "arc-coordinate",
     "基础坐标计算",
     "沿圆弧求坐标",
-    [...pointA, ...pointB, { key: "R", label: "圆弧半径 R", unit: "m", defaultValue: 80 }, { key: "arcLength", label: "到 C 点弧长 L", unit: "m", defaultValue: 30 }, { key: "offset", label: "偏距 d", unit: "m", defaultValue: 5 }, { key: "turn", label: "圆弧方向", type: "select", defaultValue: "left", options: [{ label: "左转", value: "left" }, { label: "右转", value: "right" }] }],
+    [...pointA, ...pointB, { key: "arcLength", label: "到 C 点弧长 L", unit: "m", defaultValue: 30 }, { key: "R", label: "半径 R", unit: "m", defaultValue: 80 }, { key: "turn", label: "圆心位置", type: "select", defaultValue: "left", options: [{ label: "圆心左侧", value: "left" }, { label: "圆心右侧", value: "right" }] }],
     [
       { key: "centerX", label: "圆心 X", unit: "m" },
       { key: "centerY", label: "圆心 Y", unit: "m" },
-      { key: "x", label: "圆弧点 C X", unit: "m" },
-      { key: "y", label: "圆弧点 C Y", unit: "m" },
-      { key: "offsetX", label: "偏距点 X", unit: "m" },
-      { key: "offsetY", label: "偏距点 Y", unit: "m" }
+      { key: "tangentLength", label: "切线长", unit: "m" },
+      { key: "x", label: "终点 C X", unit: "m" },
+      { key: "y", label: "终点 C Y", unit: "m" }
     ],
-    "由弦长和半径求圆心候选，按左/右转选择；theta=L/R，旋转 OA 得 OC，偏距沿径向。",
+    "由弦长和半径求圆心候选，按圆心左/右侧选择；theta=L/R，旋转 OA 得 OC，T=sqrt(R^2-(AB/2)^2)。",
     "需复核",
     "左转/右转与旋转正方向需和原图例保持一致。"
   ),

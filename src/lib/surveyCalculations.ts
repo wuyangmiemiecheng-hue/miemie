@@ -86,14 +86,14 @@ const calc = (id: string, input: NumericRecord): Record<string, number> => {
   const D = p(input, "D");
 
   switch (id) {
+    case "coordinate-forward":
     case "coordinate-forward-inverse": {
-      if (input.mode === "inverse") {
-        return { distance: dist(A, B), azimuth: az(A, B) };
-      }
       const e = dir(get(input, "alpha"));
       const target = add(A, scale(e, get(input, "distance")));
       return { x: target.x, y: target.y };
     }
+    case "coordinate-inverse":
+      return { deltaX: B.x - A.x, deltaY: B.y - A.y, distance: dist(A, B), azimuth: az(A, B) };
     case "reverse-azimuth":
       return { reverse: norm360(get(input, "alpha") + 180) };
     case "azimuth-deduction": {
@@ -130,7 +130,13 @@ const calc = (id: string, input: NumericRecord): Record<string, number> => {
       positive(rr, "直线两点不能重合。");
       const t = dot(w, r) / rr;
       const foot = add(A, scale(r, t));
-      return { footX: foot.x, footY: foot.y, distance: Math.abs(cross(r, w)) / Math.sqrt(rr), station: t };
+      return {
+        footX: foot.x,
+        footY: foot.y,
+        distance: Math.abs(cross(r, w)) / Math.sqrt(rr),
+        distanceToA: dist(foot, A),
+        distanceToB: dist(foot, B)
+      };
     }
     case "line-intersection": {
       const P = lineIntersection(A, B, C, D);
@@ -188,9 +194,11 @@ const calc = (id: string, input: NumericRecord): Record<string, number> => {
     case "circle-intersections":
     case "distance-intersection": {
       const [c1, c2] = circleIntersections(A, B, get(input, "R1"), get(input, "R2"));
-      return id === "distance-intersection"
-        ? { c1x: c1.x, c1y: c1.y, c2x: c2.x, c2y: c2.y }
-        : { c1x: c1.x, c1y: c1.y, c2x: c2.x, c2y: c2.y, centerDistance: dist(A, B) };
+      if (id === "distance-intersection") return { c1x: c1.x, c1y: c1.y, c2x: c2.x, c2y: c2.y };
+      const v1 = sub(c1, A);
+      const v2 = sub(B, A);
+      const angle = radToDeg(Math.acos(Math.min(1, Math.max(-1, dot(v1, v2) / (Math.hypot(v1.x, v1.y) * Math.hypot(v2.x, v2.y))))));
+      return { c1x: c1.x, c1y: c1.y, c2x: c2.x, c2y: c2.y, centerDistance: dist(A, B), angle };
     }
     case "arc-coordinate": {
       const R = get(input, "R");
@@ -205,9 +213,7 @@ const calc = (id: string, input: NumericRecord): Record<string, number> => {
       const sign = input.turn === "right" ? -1 : 1;
       const OC = rotate(OA, sign * radToDeg(get(input, "arcLength") / R));
       const P = add(center, OC);
-      const radial = scale(OC, 1 / R);
-      const offset = add(P, scale(radial, get(input, "offset")));
-      return { centerX: center.x, centerY: center.y, x: P.x, y: P.y, offsetX: offset.x, offsetY: offset.y };
+      return { centerX: center.x, centerY: center.y, tangentLength: q, x: P.x, y: P.y };
     }
     case "sphere-center": {
       const A3: Point3 = { ...A, z: get(input, "zA") };
