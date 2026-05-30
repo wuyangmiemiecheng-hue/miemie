@@ -1,0 +1,233 @@
+import type { UnitCategory } from "../types";
+
+export const unitCategories: UnitCategory[] = [
+  {
+    id: "length",
+    name: "长度",
+    baseUnit: "m",
+    sourceIds: ["unit-part-3", "unit-authorities"],
+    status: "已核对",
+    note: "截图中长度单位共有 17 项，统一先转为 m。",
+    units: [
+      { name: "千米", symbol: "km", toBaseFactor: 1000 },
+      { name: "米", symbol: "m", toBaseFactor: 1 },
+      { name: "分米", symbol: "dm", toBaseFactor: 0.1 },
+      { name: "厘米", symbol: "cm", toBaseFactor: 0.01 },
+      { name: "毫米", symbol: "mm", toBaseFactor: 0.001 },
+      { name: "微米", symbol: "um / μm", toBaseFactor: 0.000001 },
+      { name: "市里", symbol: "市里", toBaseFactor: 500, note: "市制常用换算，非法定单位。" },
+      { name: "市丈", symbol: "市丈", toBaseFactor: 3.333333333333333 },
+      { name: "市尺", symbol: "市尺", toBaseFactor: 0.3333333333333333 },
+      { name: "市寸", symbol: "市寸", toBaseFactor: 0.03333333333333333 },
+      { name: "市分", symbol: "市分", toBaseFactor: 0.003333333333333333 },
+      { name: "弗隆", symbol: "fur", toBaseFactor: 201.168 },
+      { name: "海里", symbol: "nmi", toBaseFactor: 1852 },
+      { name: "英里", symbol: "mi", toBaseFactor: 1609.344 },
+      { name: "码", symbol: "yd", toBaseFactor: 0.9144 },
+      { name: "英尺", symbol: "ft", toBaseFactor: 0.3048 },
+      { name: "英寸", symbol: "in", toBaseFactor: 0.0254 }
+    ]
+  },
+  {
+    id: "volume",
+    name: "体积",
+    baseUnit: "m3",
+    sourceIds: ["unit-part-3", "unit-authorities"],
+    status: "已核对",
+    note: "蒲式耳按资料默认 US dry bushel。",
+    units: [
+      { name: "立方米", symbol: "m3", toBaseFactor: 1 },
+      { name: "立方分米", symbol: "dm3", toBaseFactor: 0.001 },
+      { name: "立方厘米", symbol: "cm3", toBaseFactor: 0.000001 },
+      { name: "立方毫米", symbol: "mm3", toBaseFactor: 1e-9 },
+      { name: "升", symbol: "L / l", toBaseFactor: 0.001 },
+      { name: "分升", symbol: "dL / dl", toBaseFactor: 0.0001 },
+      { name: "厘升", symbol: "cL / cl", toBaseFactor: 0.00001 },
+      { name: "毫升", symbol: "mL / ml", toBaseFactor: 0.000001 },
+      { name: "公石", symbol: "hL", toBaseFactor: 0.1 },
+      { name: "立方英尺", symbol: "ft3", toBaseFactor: 0.028316846592 },
+      { name: "立方英寸", symbol: "in3", toBaseFactor: 0.000016387064 },
+      { name: "立方码", symbol: "yd3", toBaseFactor: 0.764554857984 },
+      { name: "亩英尺", symbol: "acre-ft", toBaseFactor: 1233.48183754752 },
+      { name: "市斗", symbol: "市斗", toBaseFactor: 0.01 },
+      { name: "立方市尺", symbol: "立方市尺", toBaseFactor: 0.03703703703703704 },
+      { name: "立方市寸", symbol: "立方市寸", toBaseFactor: 0.00003703703703703704 },
+      { name: "英制加仑", symbol: "UK gal", toBaseFactor: 0.00454609 },
+      { name: "美制加仑", symbol: "US gal", toBaseFactor: 0.003785411784 },
+      { name: "蒲式耳", symbol: "BU", toBaseFactor: 0.03523907016688, note: "默认 US dry bushel。" }
+    ]
+  },
+  {
+    id: "area",
+    name: "面积",
+    baseUnit: "m2",
+    sourceIds: ["unit-part-3", "unit-authorities"],
+    status: "已核对",
+    units: [
+      { name: "平方千米", symbol: "km2", toBaseFactor: 1000000 },
+      { name: "平方米", symbol: "m2", toBaseFactor: 1 },
+      { name: "平方分米", symbol: "dm2", toBaseFactor: 0.01 },
+      { name: "平方厘米", symbol: "cm2", toBaseFactor: 0.0001 },
+      { name: "平方毫米", symbol: "mm2", toBaseFactor: 0.000001 },
+      { name: "市顷", symbol: "市顷", toBaseFactor: 66666.66666666667 },
+      { name: "市亩", symbol: "市亩", toBaseFactor: 666.6666666666667 },
+      { name: "公顷", symbol: "ha", toBaseFactor: 10000 },
+      { name: "公亩", symbol: "a", toBaseFactor: 100 },
+      { name: "英亩", symbol: "acre", toBaseFactor: 4046.8564224 },
+      { name: "美亩", symbol: "US survey acre", toBaseFactor: 4046.872609874252, note: "历史/遗留用途。" },
+      { name: "平方英里", symbol: "sq.mi", toBaseFactor: 2589988.110336 },
+      { name: "平方码", symbol: "sq.yd", toBaseFactor: 0.83612736 },
+      { name: "平方英尺", symbol: "sq.ft", toBaseFactor: 0.09290304 },
+      { name: "平方英寸", symbol: "sq.in", toBaseFactor: 0.00064516 }
+    ]
+  },
+  {
+    id: "mass",
+    name: "重量/质量",
+    baseUnit: "kg",
+    sourceIds: ["unit-part-3", "unit-authorities"],
+    status: "已核对",
+    note: "资料截图类名为重量，但 kg/g/lb/oz 等本质为质量单位。",
+    units: [
+      { name: "千克", symbol: "kg", toBaseFactor: 1 },
+      { name: "克", symbol: "g", toBaseFactor: 0.001 },
+      { name: "毫克", symbol: "mg", toBaseFactor: 0.000001 },
+      { name: "吨", symbol: "t", toBaseFactor: 1000 },
+      { name: "公担", symbol: "q", toBaseFactor: 100 },
+      { name: "市担", symbol: "市担", toBaseFactor: 50 },
+      { name: "市斤", symbol: "市斤", toBaseFactor: 0.5 },
+      { name: "市两", symbol: "市两", toBaseFactor: 0.05 },
+      { name: "市钱", symbol: "市钱", toBaseFactor: 0.005 },
+      { name: "磅", symbol: "lb", toBaseFactor: 0.45359237 },
+      { name: "盎司", symbol: "oz", toBaseFactor: 0.028349523125 },
+      { name: "克拉", symbol: "ct", toBaseFactor: 0.0002 },
+      { name: "格令", symbol: "gr", toBaseFactor: 0.00006479891 },
+      { name: "英长吨", symbol: "lt", toBaseFactor: 1016.0469088 },
+      { name: "美短吨", symbol: "st", toBaseFactor: 907.18474 },
+      { name: "打兰", symbol: "dr", toBaseFactor: 0.0017718451953125 }
+    ]
+  },
+  {
+    id: "pressure",
+    name: "压强",
+    baseUnit: "Pa",
+    sourceIds: ["unit-part-3", "unit-authorities"],
+    status: "已核对",
+    units: [
+      { name: "帕斯卡", symbol: "Pa", toBaseFactor: 1 },
+      { name: "兆帕", symbol: "MPa", toBaseFactor: 1000000 },
+      { name: "千帕", symbol: "kPa", toBaseFactor: 1000 },
+      { name: "百帕", symbol: "hPa", toBaseFactor: 100 },
+      { name: "标准大气压", symbol: "atm", toBaseFactor: 101325 },
+      { name: "毫米汞柱", symbol: "mmHg", toBaseFactor: 133.3223684210526 },
+      { name: "厘米水柱", symbol: "cmH2O", toBaseFactor: 98.0665 },
+      { name: "毫米水柱", symbol: "mmH2O", toBaseFactor: 9.80665 },
+      { name: "英寸汞柱", symbol: "inHg", toBaseFactor: 3386.388157894737 },
+      { name: "巴", symbol: "bar", toBaseFactor: 100000 },
+      { name: "毫巴", symbol: "mbar", toBaseFactor: 100 },
+      { name: "磅力/平方英尺", symbol: "lbf/ft2", toBaseFactor: 47.88025898033584 },
+      { name: "磅力/平方英寸", symbol: "lbf/in2", toBaseFactor: 6894.757293168361 },
+      { name: "千克力/平方米", symbol: "kgf/m2", toBaseFactor: 9.80665 },
+      { name: "牛/平方米", symbol: "N/m2", toBaseFactor: 1 },
+      { name: "牛/平方厘米", symbol: "N/cm2", toBaseFactor: 10000 },
+      { name: "牛/平方毫米", symbol: "N/mm2", toBaseFactor: 1000000 }
+    ]
+  },
+  {
+    id: "angle",
+    name: "角度",
+    baseUnit: "rad",
+    sourceIds: ["unit-part-3", "unit-authorities"],
+    status: "已核对",
+    units: [
+      { name: "度", symbol: "deg / °", toBaseFactor: Math.PI / 180 },
+      { name: "分", symbol: "′", toBaseFactor: Math.PI / 10800 },
+      { name: "秒", symbol: "″", toBaseFactor: Math.PI / 648000 },
+      { name: "弧度", symbol: "rad", toBaseFactor: 1 },
+      { name: "圆周", symbol: "rev / turn", toBaseFactor: 2 * Math.PI },
+      { name: "直角", symbol: "right angle", toBaseFactor: Math.PI / 2 },
+      { name: "百分度", symbol: "gon", toBaseFactor: Math.PI / 200 },
+      { name: "毫弧度", symbol: "mrad", toBaseFactor: 0.001 }
+    ]
+  },
+  {
+    id: "force",
+    name: "力",
+    baseUnit: "N",
+    sourceIds: ["unit-part-3", "unit-review", "unit-authorities"],
+    status: "需复核",
+    note: "资料标注截图中“兆牛(mN)”存在文字与符号冲突，网站拆成 MN 与 mN。",
+    units: [
+      { name: "牛", symbol: "N", toBaseFactor: 1 },
+      { name: "千牛", symbol: "kN", toBaseFactor: 1000 },
+      { name: "兆牛", symbol: "MN", toBaseFactor: 1000000, status: "需复核" },
+      { name: "毫牛", symbol: "mN", toBaseFactor: 0.001, status: "需复核" },
+      { name: "千克力", symbol: "kgf", toBaseFactor: 9.80665 },
+      { name: "克力", symbol: "gf", toBaseFactor: 0.00980665 },
+      { name: "公吨力", symbol: "tf", toBaseFactor: 9806.65 },
+      { name: "磅力", symbol: "lbf", toBaseFactor: 4.4482216152605 },
+      { name: "千磅力", symbol: "kip", toBaseFactor: 4448.2216152605 },
+      { name: "达因", symbol: "dyne", toBaseFactor: 0.00001 },
+      { name: "磅达", symbol: "pdl", toBaseFactor: 0.138254954376 }
+    ]
+  },
+  {
+    id: "time",
+    name: "时间",
+    baseUnit: "s",
+    sourceIds: ["unit-part-3", "unit-review", "unit-authorities"],
+    status: "已核对",
+    note: "年暂按常用平年 365 d。",
+    units: [
+      { name: "年", symbol: "year", toBaseFactor: 31536000, note: "按 365 天计算。" },
+      { name: "周", symbol: "week", toBaseFactor: 604800 },
+      { name: "天", symbol: "d", toBaseFactor: 86400 },
+      { name: "小时", symbol: "h", toBaseFactor: 3600 },
+      { name: "分钟", symbol: "min", toBaseFactor: 60 },
+      { name: "秒", symbol: "s", toBaseFactor: 1 },
+      { name: "毫秒", symbol: "ms", toBaseFactor: 0.001 },
+      { name: "微秒", symbol: "us / μs", toBaseFactor: 0.000001 },
+      { name: "纳秒", symbol: "ns", toBaseFactor: 1e-9 },
+      { name: "皮秒", symbol: "ps", toBaseFactor: 1e-12 }
+    ]
+  },
+  {
+    id: "energy",
+    name: "能量",
+    baseUnit: "J",
+    sourceIds: ["unit-part-3", "unit-review", "unit-authorities"],
+    status: "需复核",
+    note: "资料说明压缩包未见能量截图，本类按常用工程默认版上线。",
+    units: [
+      { name: "焦耳", symbol: "J", toBaseFactor: 1 },
+      { name: "千焦", symbol: "kJ", toBaseFactor: 1000 },
+      { name: "兆焦", symbol: "MJ", toBaseFactor: 1000000 },
+      { name: "瓦时", symbol: "Wh", toBaseFactor: 3600 },
+      { name: "千瓦时", symbol: "kWh", toBaseFactor: 3600000 },
+      { name: "卡", symbol: "cal", toBaseFactor: 4.184 },
+      { name: "千卡", symbol: "kcal", toBaseFactor: 4184 },
+      { name: "英热单位", symbol: "Btu", toBaseFactor: 1055.05585262 },
+      { name: "英尺磅力", symbol: "ft*lbf", toBaseFactor: 1.3558179483314 },
+      { name: "千克力米", symbol: "kgf*m", toBaseFactor: 9.80665 },
+      { name: "电子伏", symbol: "eV", toBaseFactor: 1.602176634e-19 },
+      { name: "尔格", symbol: "erg", toBaseFactor: 1e-7 }
+    ]
+  },
+  {
+    id: "density",
+    name: "密度",
+    baseUnit: "kg/m3",
+    sourceIds: ["unit-part-3", "unit-authorities"],
+    status: "已核对",
+    units: [
+      { name: "克/立方厘米", symbol: "g/cm3", toBaseFactor: 1000 },
+      { name: "克/毫升", symbol: "g/ml", toBaseFactor: 1000 },
+      { name: "千克/立方米", symbol: "kg/m3", toBaseFactor: 1 },
+      { name: "磅/立方英寸", symbol: "lb/in3", toBaseFactor: 27679.90471020312 },
+      { name: "磅/立方英尺", symbol: "lb/ft3", toBaseFactor: 16.01846337396014 },
+      { name: "磅/英国加仑", symbol: "lb/UKgal", toBaseFactor: 99.7763726631017 },
+      { name: "磅/美国加仑", symbol: "lb/USgal", toBaseFactor: 119.8264273168966 },
+      { name: "英吨/立方码", symbol: "UK ton/yd3", toBaseFactor: 1328.939183617434 }
+    ]
+  }
+];
